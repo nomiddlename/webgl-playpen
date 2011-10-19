@@ -64,6 +64,39 @@ function doTheThing(THREE, container) {
         return smooth;
     }
 
+    function coronaMaterial(clock, colour1, colour2, lightPosition) {
+        var uniforms = {
+            time: {
+                type: "f",
+                value: 0.0025
+            },
+            colour1: {
+                type: "c",
+                value: new THREE.Color(colour1)
+            },
+            colour2: {
+                type: "c",
+                value: new THREE.Color(colour2)
+            },
+            lightPosition: {
+                type: "v3",
+                value: lightPosition
+            }
+        },
+        material = new THREE.MeshShaderMaterial({
+            transparent: true,
+            uniforms: uniforms,
+            vertexShader: document.getElementById("coronaVertex").textContent,
+            fragmentShader: document.getElementById("coronaFragment").textContent
+        });
+
+        clock.listen(function() {
+            uniforms.time.value += 0.0025;
+        });
+
+        return material;
+    }
+
     function turbulentMaterial(clock, colour1, colour2, lightPosition) {
         var uniforms = {
             time: {
@@ -192,12 +225,10 @@ function doTheThing(THREE, container) {
         clock = new Clock(),
         pointLight = light(0xffffff, 15, 100, 150),
         sunPosition = new THREE.Vector3(0,0,0),
-        sun = /*wrap(*/
-            sphere(50, 16, turbulentMaterial(clock, 0xffaa00, 0xff3300, pointLight.position)),
-        /*    sphere(51, 16, corona(clock, 0xffee00, 0xff9900))
-        ),*/
+        sun = sphere(50, 16, turbulentMaterial(clock, 0xff6600, 0xff3300, pointLight.position)),
+        corona = sphere(52, 32, coronaMaterial(clock, 0xffee00, 0xff9900, pointLight.position)),
         planet = sphere(20, 32, turbulentMaterial(clock, 0x6666ff, 0xffffff, pointLight.position)),
-        moon = lumpySphere(10, 32, 1, 0xffffff, pointLight.position),
+        moon = lumpySphere(10, 32, 1, 0xaaaaaa, pointLight.position),
         stars = particles(1000);
 
     camera.position.z = 300;
@@ -207,6 +238,7 @@ function doTheThing(THREE, container) {
     container.appendChild(renderer.domElement);
 
     scene.addChild(sun);
+    scene.addChild(corona);
     scene.addChild(planet);
     scene.addChild(moon);
     scene.addChild(stars);
