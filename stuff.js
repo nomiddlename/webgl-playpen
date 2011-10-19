@@ -220,13 +220,26 @@ function doTheThing(THREE, container) {
         near = 0.1,
         far = 10000,
         renderer = new THREE.WebGLRenderer(),
-        camera = new THREE.Camera(viewAngle, aspect, near, far),
+        //camera = new THREE.Camera(viewAngle, aspect, near, far),
+    camera = new THREE.FlyCamera({
+
+			fov: viewAngle,
+			aspect: aspect,
+			movementSpeed: 50,
+			domElement: container,
+			rollSpeed: Math.PI / 24,
+			autoForward: false,
+			dragToLook: false,
+			near: near,
+			far: far
+
+        }),
         scene = new THREE.Scene(),
         clock = new Clock(),
         pointLight = light(0xffffff, 15, 100, 150),
         sunPosition = new THREE.Vector3(0,0,0),
         sun = sphere(50, 16, turbulentMaterial(clock, 0xff6600, 0xff3300, pointLight.position)),
-        corona = sphere(52, 32, coronaMaterial(clock, 0xffee00, 0xff9900, pointLight.position)),
+        corona = sphere(52, 32, coronaMaterial(clock, 0xffff00, 0xff9900, pointLight.position)),
         planet = sphere(20, 32, turbulentMaterial(clock, 0x6666ff, 0xffffff, pointLight.position)),
         moon = lumpySphere(10, 32, 1, 0xaaaaaa, pointLight.position),
         stars = particles(1000);
