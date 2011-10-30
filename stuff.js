@@ -229,7 +229,7 @@ function doTheThing(THREE, container) {
 			domElement: container,
 			rollSpeed: Math.PI / 24,
 			autoForward: false,
-			dragToLook: false,
+			dragToLook: true,
 			near: near,
 			far: far
 
@@ -241,7 +241,7 @@ function doTheThing(THREE, container) {
         sun = sphere(50, 16, turbulentMaterial(clock, 0xff6600, 0xff3300, pointLight.position)),
         corona = sphere(52, 32, coronaMaterial(clock, 0xffff00, 0xff9900, pointLight.position)),
         planet = sphere(20, 32, turbulentMaterial(clock, 0x6666ff, 0xffffff, pointLight.position)),
-        moon = lumpySphere(10, 32, 1, 0xaaaaaa, pointLight.position),
+        moon = lumpySphere(10, 32, 2, 0xaaaaaa, pointLight.position),
         stars = particles(1000);
 
     camera.position.z = 300;
